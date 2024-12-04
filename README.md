@@ -1,5 +1,8 @@
 <div align="center">
 <!-- Logo here -->
+<p align="center">
+  <img width="100" src="https://github.com/user-attachments/assets/44ebc490-691b-4b38-89b1-dcab2afb354d" alt="gitsnap-logo-bg">
+</p>
 
  <h1>GitSnap</h1>
  <p>Visualize key metrics of a GitHub repository as charts</p>
@@ -30,24 +33,34 @@ It utilize the [Echarts library](https://echarts.apache.org/) to create various 
 How to Locally Install `GitSnap` in your Chrome Browser.
 
 **1.** Open Google Chrome browser and type `chrome://extensions/` in the search tab.
+<!-- screenshot here -->
+![184042389-db88d5ca-8f9d-4040-b20d-b67106cb2df5](https://github.com/user-attachments/assets/9ae3d6a7-0c98-4d58-b69c-d1a9abe731a5)
+
+
 Or simply, click the **Options Menu** navigate to **Settings** then select **Extensions**
 
 <!-- screenshot here -->
+![184042167-203fa1d2-f4de-4e5b-800f-d56a4b7be6a0](https://github.com/user-attachments/assets/4b5ea4d8-1804-4419-8f70-24881b732e3f)
 
-**2.** Turn **Developer mode**, Click on **Load Unpacked**
 
+**2.** Turn **Developer mode**, Click on **Load Unpacked**.
 <!-- screenshot here -->
+<img width="688" alt="Screenshot 2024-12-04 at 20 02 15" src="https://github.com/user-attachments/assets/e29e15b3-447b-4f7c-bbe9-fad0b5de2a47">
 
-**3.** Locate the folder **gitsnap** files from your directory.
 
+**3.** Locate the **gitsnap** directory and select to load the files.
 <!-- screenshot here -->
+<img width="702" alt="Screenshot 2024-12-04 at 20 01 54" src="https://github.com/user-attachments/assets/fea7c4fa-0b11-49db-9cb0-b28d5bb3dbdf">
+
 
 ## How It Works
 
-- After installation from Chrome Web Store, switch on the toggle and hover on any GitHub repository to see visually enaging charts.
-- Alternatively, select the `Enter GitHub URL` tab and copy-paste any GitHub repository link. (COMING SOON!)
+Select the `GitSnap` from the Extension Menu. Then, turn on the toggle and hover on any GitHub repository to see visually engaging charts.
+
+## Work In Progress
+Alternatively, installation from Chrome Web Store switch select the `Enter GitHub URL` tab and copy-paste any GitHub repository link. (COMING SOON!)
 
 
 ## License
 
-This project is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php) license.
+This project is licensed under [MIT](https://opensource.org/license/mit) license.
