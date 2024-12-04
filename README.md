@@ -1,5 +1,6 @@
 <div align="center">
 <!-- Logo here -->
+![Gitsnap logo](https://github.com/user-attachments/assets/a863849d-dd40-4b2b-8f2b-7bee79b55d47)
 
  <h1>GitSnap</h1>
  <p>Visualize key metrics of a GitHub repository as charts</p>
