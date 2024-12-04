@@ -1,0 +1,44 @@
+.repo-tooltip {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #e1e4e8;
+    border-radius: 6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+    padding: 16px;
+    width: 800px;
+    font-size: 14px;
+    display: none;
+    z-index: 1000;
+}
+
+
+/* .contributors-chart, .branches-chart-chart, .prs-chart, .issues-chart {
+  padding: 8px;
+  border-bottom: 1px solid #f1f1f1;
+} */
+
+.loading {
+    text-align: center;
+    padding: 20px;
+}
+
+.error {
+  background: #ffeef0;
+  border-radius: 4px;
+    color: #cb2431;
+    padding: 8px;
+}
+
+.tooltip-section {
+  background: #fff;
+  padding: 12px;
+  border: 1px solid #eaecef;
+  border-radius: 6px;
+}
+
+.tooltip-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #24292e;
+}
