@@ -52,13 +52,28 @@ Or simply, click the **Options Menu** navigate to **Settings** then select **Ext
 <!-- screenshot here -->
 <img width="702" alt="Screenshot 2024-12-04 at 20 01 54" src="https://github.com/user-attachments/assets/fea7c4fa-0b11-49db-9cb0-b28d5bb3dbdf">
 
+## Configuration Instructions
+
+In `config.js`, you'll need to modify the `GITHUB_API_KEY` with your GitHub Personal Access Token.
+
+- Click on your profile picture in the top right corner and select **Settings** from the dropdown menu.
+- In the left sidebar, scroll down and click on **Developer settings**.
+- Click on **Personal access tokens**. Then, Select **Tokens (classic)**.
+- Click on the **Generate new token** button.
+- Copy your new token immediately, as you won’t be able to see it again once you leave this page.
+- Update the `config.js` file.
+     ```javascript
+     const CONFIG = {
+         GITHUB_API_KEY: 'your_personal_access_token_here',
+     };
+     ```
 
 ## How It Works
 
 Select the `GitSnap` from the Extension Menu. Then, turn on the toggle and hover on any GitHub repository to see visually engaging charts.
 
 ## Work In Progress
-Alternatively, installation from Chrome Web Store switch select the `Enter GitHub URL` tab and copy-paste any GitHub repository link. (COMING SOON!)
+Alternatively, after installation from Chrome Web Store. Switch/Select the `Enter GitHub URL` tab and copy-paste any GitHub repository link. (COMING SOON!)
 
 
 ## License
