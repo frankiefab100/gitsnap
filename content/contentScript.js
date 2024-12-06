@@ -15,7 +15,7 @@ function createTooltip() {
 }
 
 function listenForExtensionStatus() {
-  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  chrome.runtime.onMessage.addListener((message, sendResponse) => {
     try {
       if (message.action === "toggleTooltip") {
         enabled = message.enabled;
@@ -29,7 +29,7 @@ function listenForExtensionStatus() {
     } catch (error) {
       sendResponse({ success: false, error: error.message });
     }
-    return true; // Keep the message channel open for async response
+    return true;
   });
 }
 
@@ -305,11 +305,10 @@ function createPullRequestsChart(container, pullRequests) {
 
 function createIssuesChart(container, issues) {
   const chart = echarts.init(container);
-
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
   const timeData = {};
+
   for (
     let d = new Date(thirtyDaysAgo);
     d <= new Date();
@@ -331,20 +330,30 @@ function createIssuesChart(container, issues) {
   });
 
   const option = {
-    tooltip: { trigger: "axis" },
-    legend: { data: ["Open", "Closed"] },
-    xAxis: { type: "category", data: Object.keys(timeData) },
-    yAxis: { type: "value" },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: { type: "shadow" },
+    },
+    legend: {
+      data: ["Open", "Closed"],
+    },
+    xAxis: {
+      type: "category",
+      data: Object.keys(timeData),
+    },
+    yAxis: {
+      type: "value",
+    },
     series: [
       {
         name: "Open",
-        type: "line",
+        type: "bar",
         data: Object.values(timeData).map((d) => d.open),
         itemStyle: { color: "#28a745" },
       },
       {
         name: "Closed",
-        type: "line",
+        type: "bar",
         data: Object.values(timeData).map((d) => d.closed),
         itemStyle: { color: "#cb2431" },
       },
