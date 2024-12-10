@@ -30,6 +30,11 @@ It utilize the [Echarts library](https://echarts.apache.org/) to create various 
 
 ## Installation
 
+### Install from the Chrome Web Store
+<a href="https://chromewebstore.google.com/detail/gitsnap/gkeemliblioicebplmgekbmpdleogmpg" target="_blank"><img src="https://github.com/user-attachments/assets/c9349de6-ccfe-4bd0-a4b0-650a4553582d" alt="Chrome Web Store" style="width:200px"/></a>
+
+### Local Installation
+
 How to Locally Install `GitSnap` in your Chrome Browser.
 
 **1.** Open Google Chrome browser and type `chrome://extensions/` in the search tab.
