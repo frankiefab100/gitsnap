@@ -6,7 +6,11 @@
  <h1>GitSnap</h1>
  <p>Visualize key metrics of a GitHub repository as charts</p>
 </div>
-  
+
+<div align="center">
+   <img src="https://badgen.net/chrome-web-store/v/gkeemliblioicebplmgekbmpdleogmpg?icon=chrome&color=607cd2" alt="chrome web store version">
+   <img src="https://badgen.net/chrome-web-store/users/gkeemliblioicebplmgekbmpdleogmpg?icon=chrome&color=607cd2" alt="chrome web store users">
+</div> 
 <p align="center">
   <a href="https://github.com/frankiefab100/gitsnap/issues/new/choose">Report Bug</a>
     ·
@@ -84,9 +88,10 @@ In `config.js`, you'll need to modify the `GITHUB_API_KEY` with your GitHub Pers
      };
      ```
 
-## Work In Progress
-Switch/Select the `Enter GitHub URL` tab and copy-paste any GitHub repository link COMING SOON!).
+## Roadmap (Work In Progress)
 
+- [ ] **GitHub URL Input**: Implement a feature to switch/select the "Enter GitHub URL" tab where users can copy and paste any GitHub repository link.
+- [ ] **Custom Toggle Switches**: Introduce custom toggle switches for each chart type, allowing users to display data for Contributors, Pull Requests, Issues or Branches.
 
 ## License
 
