@@ -1,5 +1,4 @@
 <div align="center">
-<!-- Logo here -->
 <p align="center">
   <img width="100" src="https://github.com/user-attachments/assets/44ebc490-691b-4b38-89b1-dcab2afb354d" alt="gitsnap-logo-bg">
 </p>
@@ -19,13 +18,24 @@ GitSnap is a browser extension that transforms your GitHub repository data into 
 
 It utilize the [Echarts library](https://echarts.apache.org/) to create various types of charts (such as line chart, pie chart, bar chart) for visualizing GitHub repository key metrics such as contributors' activity, branches, pull request, and issue statistics.
 
-
 ## Features
 
 - **Contributors Metrics**: See who is contributing to your project with detailed insights into distribution of contributions as well as key contributors.
 - **Pull Request Analytics**: Monitor the status (open, merged, and closed) of pull requests over time.
 - **Issue Tracking**: Track issues with line charts that display both open and closed issues over time.
 - **Branch Visualization**: View branches as a tree structure, to understand the relationships and hierarchy between different branches in your repository.
+
+## Demo
+
+![GitSnap-gif](https://github.com/user-attachments/assets/26eab250-353e-4ca0-bc88-3a39a27ac47c)
+
+## How It Works
+
+- After installation, click on the GitSnap icon in your browser's extension menu.
+- Toggle the switch to activate the extension.
+- Hover over any GitHub repository link to view visually engaging charts that present key data.
+
+> **Warning**: The GitSnap extension will only work on GitHub pages. If you are not on a GitHub repository, the extension will remain disabled and no charts will be displayed.
 
 
 ## Installation
@@ -67,18 +77,15 @@ In `config.js`, you'll need to modify the `GITHUB_API_KEY` with your GitHub Pers
 - Click on the **Generate new token** button.
 - Copy your new token immediately, as you won’t be able to see it again once you leave this page.
 - Update the `config.js` file.
+  
      ```javascript
      const CONFIG = {
          GITHUB_API_KEY: 'your_personal_access_token_here',
      };
      ```
 
-## How It Works
-
-Select the `GitSnap` from the Extension Menu. Then, turn on the toggle and hover on any GitHub repository to see visually engaging charts.
-
 ## Work In Progress
-Alternatively, after installation from Chrome Web Store. Switch/Select the `Enter GitHub URL` tab and copy-paste any GitHub repository link. (COMING SOON!)
+Switch/Select the `Enter GitHub URL` tab and copy-paste any GitHub repository link COMING SOON!).
 
 
 ## License
