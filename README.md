@@ -39,7 +39,9 @@ It utilize the [Echarts library](https://echarts.apache.org/) to create various 
 - Toggle the switch to activate the extension.
 - Hover over any GitHub repository link to view visually engaging charts that present key data.
 
-> **Warning**: The GitSnap extension will only work on GitHub pages. If you are not on a GitHub repository, the extension will remain disabled and no charts will be displayed.
+> [!NOTE]
+>
+> The GitSnap extension will only work on GitHub pages. If you are not on a GitHub repository, the extension will remain disabled and no charts will be displayed.
 
 
 ## Installation
@@ -53,23 +55,23 @@ How to Locally Install `GitSnap` in your Chrome Browser.
 
 **1.** Open Google Chrome browser and type `chrome://extensions/` in the search tab.
 <!-- screenshot here -->
-![184042389-db88d5ca-8f9d-4040-b20d-b67106cb2df5](https://github.com/user-attachments/assets/9ae3d6a7-0c98-4d58-b69c-d1a9abe731a5)
+![chrome://extensions/ in the search tab](https://github.com/user-attachments/assets/9ae3d6a7-0c98-4d58-b69c-d1a9abe731a5)
 
 
 Or simply, click the **Options Menu** navigate to **Settings** then select **Extensions**
 
 <!-- screenshot here -->
-![184042167-203fa1d2-f4de-4e5b-800f-d56a4b7be6a0](https://github.com/user-attachments/assets/4b5ea4d8-1804-4419-8f70-24881b732e3f)
+![Options Menu](https://github.com/user-attachments/assets/4b5ea4d8-1804-4419-8f70-24881b732e3f)
 
 
 **2.** Turn **Developer mode**, Click on **Load Unpacked**.
 <!-- screenshot here -->
-<img width="688" alt="Screenshot 2024-12-04 at 20 02 15" src="https://github.com/user-attachments/assets/e29e15b3-447b-4f7c-bbe9-fad0b5de2a47">
+<img width="688" alt="Developer mode" src="https://github.com/user-attachments/assets/e29e15b3-447b-4f7c-bbe9-fad0b5de2a47">
 
 
 **3.** Locate the **gitsnap** directory and select to load the files.
 <!-- screenshot here -->
-<img width="702" alt="Screenshot 2024-12-04 at 20 01 54" src="https://github.com/user-attachments/assets/fea7c4fa-0b11-49db-9cb0-b28d5bb3dbdf">
+<img width="702" alt="Load Unpacked" src="https://github.com/user-attachments/assets/fea7c4fa-0b11-49db-9cb0-b28d5bb3dbdf">
 
 ## Configuration Instructions
 
