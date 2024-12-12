@@ -95,6 +95,10 @@ In `config.js`, you'll need to modify the `GITHUB_API_KEY` with your GitHub Pers
 - [ ] **GitHub URL Input**: Implement a feature to switch/select the "Enter GitHub URL" tab where users can copy and paste any GitHub repository link.
 - [ ] **Custom Toggle Switches**: Introduce custom toggle switches for each chart type, allowing users to display data for Contributors, Pull Requests, Issues or Branches.
 
+## Releases
+
+To see the latest updates and changes, please refer to the [CHANGELOG](https://github.com/frankiefab100/gitsnap/blob/main/CHANGELOG).
+
 ## License
 
 This project is licensed under [MIT](https://opensource.org/license/mit) license.
