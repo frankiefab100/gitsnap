@@ -1,0 +1,195 @@
+name: Update Changelog and Version
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'manifest.json'
+      - '**/*.js'
+      - '**/*.html'
+      - '**/*.css'
+
+jobs:
+  update-version-and-changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get current version and commit message
+        id: info
+        run: |
+          VERSION=$(jq -r .version manifest.json)
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "commit_message=$COMMIT_MSG" >> $GITHUB_OUTPUT
+          echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Process version bump
+        id: version
+        run: |
+          COMMIT_MSG="${{ steps.info.outputs.commit_message }}"
+          CURRENT_VERSION="${{ steps.info.outputs.version }}"
+          
+          # Determine bump type
+          if [[ "$COMMIT_MSG" == *"BREAKING CHANGE"* ]] || [[ "$COMMIT_MSG" == *"!"* ]]; then
+            BUMP_TYPE="major"
+          elif [[ "$COMMIT_MSG" =~ ^feat:.*$ ]]; then
+            BUMP_TYPE="minor"
+          elif [[ "$COMMIT_MSG" =~ ^fix:.*$ ]]; then
+            BUMP_TYPE="patch"
+          else
+            BUMP_TYPE="none"
+          fi
+          
+          # Calculate new version
+          if [ "$BUMP_TYPE" != "none" ]; then
+            IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+            
+            if [ "$BUMP_TYPE" == "major" ]; then
+              NEW_VERSION="$((MAJOR + 1)).0.0"
+              VERSION_NAME="Major Release"
+            elif [ "$BUMP_TYPE" == "minor" ]; then
+              NEW_VERSION="$MAJOR.$((MINOR + 1)).0"
+              VERSION_NAME="Minor Release"
+            else
+              NEW_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
+              VERSION_NAME="Patch Release"
+            fi
+            
+            echo "type=$BUMP_TYPE" >> $GITHUB_OUTPUT
+            echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+            echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          else
+            echo "type=none" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Generate release notes
+        if: steps.version.outputs.type != 'none'
+        id: notes
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LAST_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"%s")
+          else
+            COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"%s")
+          fi
+          
+          BREAKING=""
+          FEATURES=""
+          FIXES=""
+          OTHER=""
+          
+          while IFS= read -r msg; do
+            [ -z "$msg" ] && continue
+            
+            hash=$(git log -1 --pretty=format:%h --grep="$msg")
+            issue_ref=""
+            if [[ $msg =~ \#([0-9]+) ]]; then
+              issue_ref=" (#${BASH_REMATCH[1]})"
+            fi
+            
+            if [[ $msg == *"BREAKING CHANGE"* ]] || [[ $msg == *"!"* ]]; then
+              BREAKING+="- ${msg//@(feat|fix)!: /} ($hash$issue_ref)\n"
+            elif [[ $msg =~ ^feat:.*$ ]]; then
+              FEATURES+="- ${msg//feat: /} ($hash$issue_ref)\n"
+            elif [[ $msg =~ ^fix:.*$ ]]; then
+              FIXES+="- ${msg//fix: /} ($hash$issue_ref)\n"
+            else
+              OTHER+="- $msg ($hash$issue_ref)\n"
+            fi
+          done <<< "$COMMITS"
+          
+          NOTES=""
+          [ -n "$BREAKING" ] && NOTES+="### Breaking Changes\n\n$BREAKING\n"
+          [ -n "$FEATURES" ] && NOTES+="### Features\n\n$FEATURES\n"
+          [ -n "$FIXES" ] && NOTES+="### Bug Fixes\n\n$FIXES\n"
+          [ -n "$OTHER" ] && NOTES+="### Other Changes\n\n$OTHER\n"
+          
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo -e "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Initialize changelog if needed
+        if: steps.version.outputs.type != 'none'
+        run: |
+          if [ ! -f "CHANGELOG.md" ]; then
+            cat > CHANGELOG.md << EOL
+          # Changelog
+
+          All notable changes to this project will be documented in this file.
+
+          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+          ## [1.0.0] - $(date +%Y-%m-%d)
+          ### Added
+          - Initial release
+          - Basic extension structure
+          - Automated changelog system
+          EOL
+          fi
+
+      - name: Update manifest.json
+        if: steps.version.outputs.type != 'none'
+        run: |
+          jq --arg v "${{ steps.version.outputs.new_version }}" \
+             --arg n "${{ steps.version.outputs.version_name }}" \
+             '.version = $v | .version_name = $n' \
+             manifest.json > manifest.tmp && mv manifest.tmp manifest.json
+
+      - name: Update changelog
+        if: steps.version.outputs.type != 'none'
+        run: |
+          NEW_ENTRY="## [${{ steps.version.outputs.new_version }}] - ${{ steps.info.outputs.date }}\n"
+          NEW_ENTRY+="_${{ steps.version.outputs.version_name }}_\n\n"
+          NEW_ENTRY+="${{ steps.notes.outputs.notes }}"
+          
+          awk -v entry="$NEW_ENTRY" '
+            /^# Changelog/ {
+              print
+              print ""
+              print entry
+              next
+            }
+            { print }
+          ' CHANGELOG.md > CHANGELOG.tmp
+          mv CHANGELOG.tmp CHANGELOG.md
+
+      - name: Create ZIP for release
+        if: steps.version.outputs.type != 'none'
+        run: |
+          zip -r extension.zip . -x "*.git*" "node_modules/*" "scripts/*" "*.md" "package*.json"
+
+      - name: Commit changes
+        if: steps.version.outputs.type != 'none'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add CHANGELOG.md manifest.json
+          git commit -m "chore: release v${{ steps.version.outputs.new_version }}"
+
+      - name: Push changes and tags
+        if: steps.version.outputs.type != 'none'
+        run: |
+          git tag "v${{ steps.version.outputs.new_version }}"
+          git push origin main --tags
+
+      - name: Create GitHub Release
+        if: steps.version.outputs.type != 'none'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.new_version }}
+          name: v${{ steps.version.outputs.new_version }}
+          body: |
+            ${{ steps.notes.outputs.notes }}
+          files: extension.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
