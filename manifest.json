@@ -2,11 +2,17 @@
   "manifest_version": 3,
   "short_name": "GitSnap",
   "name": "GitSnap",
-  "version": "0.1.0",
-  "version_name": "0.1 beta",
+  "version": "0.2.0",
+  "version_name": "Minor Release",
   "description": "Visualize key metrics of any GitHub repository",
-  "permissions": ["activeTab", "tabs"],
-  "host_permissions": ["https://api.github.com/*", "https://github.com/*"],
+  "permissions": [
+    "activeTab",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://api.github.com/*",
+    "https://github.com/*"
+  ],
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
@@ -22,9 +28,17 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://github.com/*"],
-      "css": ["content/tooltip.css"],
-      "js": ["config.js", "utils/echarts.min.js", "content/contentScript.js"]
+      "matches": [
+        "*://github.com/*"
+      ],
+      "css": [
+        "content/tooltip.css"
+      ],
+      "js": [
+        "config.js",
+        "utils/echarts.min.js",
+        "content/contentScript.js"
+      ]
     }
   ],
   "author": "Franklin Ohaegbulam"
