@@ -11,18 +11,89 @@
     <link rel="manifest" href="./manifest.json" />
     <link rel="shortcut icon" href="../icons/favicon.ico" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css2?family=Futura:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="popup.css">
     <title>GitSnap - Visualize key metrics of any GitHub repository</title>
 </head>
 
 <body>
     <div class="popup-container">
-        <h2>Toggle tooltip</h2>
+        <div class="text">
+            <h2>Toggle Tooltip</h2>
+            <p>Select the GitHub data to visualize</p>
+        </div>
 
-        <label class="switch">
-            <input type="checkbox" id="tooltipToggle">
-            <span class="slider"></span>
-        </label>
+        <div class="select-chart">
+            <p>Contributors</p>
+            <label class="toggle">
+                <div class="toggle-container">
+                    <input id="contributors-switch" type="checkbox" class="tooltipToggle">
+                    <div class="toggle-background"></div>
+                    <div class="toggle-button">
+                        <span class="toggle-icon toggle-icon-active">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="toggle-icon toggle-icon-inactive">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="select-chart">
+            <p>Branches</p>
+            <label class="toggle">
+                <div class="toggle-container">
+                    <input id="branches-switch" type="checkbox" class="tooltipToggle">
+                    <div class="toggle-background"></div>
+                    <div class="toggle-button">
+                        <span class="toggle-icon toggle-icon-active">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="toggle-icon toggle-icon-inactive">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="select-chart">
+            <p>Pull Requests</p>
+            <label class="toggle">
+                <div class="toggle-container">
+                    <input id="pullrequest-switch" type="checkbox" class="tooltipToggle">
+                    <div class="toggle-background"></div>
+                    <div class="toggle-button">
+                        <span class="toggle-icon toggle-icon-active">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="toggle-icon toggle-icon-inactive">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="select-chart">
+            <p>Issues</p>
+            <label class="toggle">
+                <div class="toggle-container">
+                    <input id="issues-switch" type="checkbox" class="tooltipToggle">
+                    <div class="toggle-background"></div>
+                    <div class="toggle-button">
+                        <span class="toggle-icon toggle-icon-active">
+                            <i class="fa-solid fa-check"></i>
+                        </span>
+                        <span class="toggle-icon toggle-icon-inactive">
+                            <i class="fa-solid fa-xmark"></i>
+                        </span>
+                    </div>
+                </div>
+            </label>
+        </div>
+    </div>
     </div>
     <script src="popup.js"></script>
 </body>

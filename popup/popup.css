@@ -1,55 +1,114 @@
-.popup-container {
-    width: 200px;
-    padding: 16px;
+body{
+    padding: 10px 15px; 
+    width: 220px;
+    height: auto;
 }
 
-h2 {
-    margin: 0 0 16px 0;
-    font-size: 16px;
+.pop-container{
+  background-color: #fff;
+  color: #222;
+  font-family: "Futura", san-serif;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+.text {
+    text-align: center;
 }
 
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+.text p{
+    font: 12px;
+    color: #979797;
 }
 
-.slider {
-    position: absolute;
+.select-chart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: #f8f9ff;
+    padding: 0 10px;
+    margin-bottom: 8px;
+    border-radius: 10px;
+}
+
+.toggle {
+    display: flex;
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
+    user-select: none;
+    align-items: center;
 }
 
-.slider:before {
+.toggle-container {
+    position: relative;
+}
+
+.tooltipToggle {
     position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    border-width: 0;
+}
+
+.toggle-background {
+    display: block;
+    height: 22px;
+    width: 45px;
+    border-radius: 9999px;
+    background-color: #bed4ff;
+}
+
+.toggle-button {
+    position: absolute;
     left: 4px;
-    bottom: 4px;
+    top: 4px;
+    display: flex;
+    height: 14px;
+    width: 14px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
     background-color: white;
-    transition: .4s;
-    border-radius: 50%;
+    transition: transform 0.3s ease;
 }
 
-input:checked + .slider {
-    background-color: #2196F3;
+.tooltipToggle:checked + .toggle-background {
+    background-color: #3B82F6;
 }
 
-input:checked + .slider:before {
-    transform: translateX(26px);
+.tooltipToggle:checked ~ .toggle-button {
+    transform: translateX(24px);
+}
+
+.toggle-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-icon-active {
+    display: none;
+}
+
+.tooltipToggle:checked ~ .toggle-button .toggle-icon-active {
+    display: flex;
+}
+
+.toggle-icon-inactive {
+    color: #6B7280;
+}
+
+.tooltipToggle:checked ~ .toggle-button .toggle-icon-inactive {
+    display: none;
+}
+
+.fa-check, .fa-xmark {
+    font-size: 10px;
 }
 
