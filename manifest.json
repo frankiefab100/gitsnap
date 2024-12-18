@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": ["*://github.com/*"],
-      "css": ["content/tooltip.css"],
+      "css": ["content/contentStyle.css"],
       "js": ["config.js", "utils/echarts.min.js", "content/contentScript.js"]
     }
   ],
