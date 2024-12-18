@@ -158,9 +158,8 @@ async function fetchBranches() {
 }
 
 async function fetchPullRequests() {
-  const url = `https://api.github.com/repos/${activeRepo.owner}/${activeRepo.repo}/pulls`;
-  const prs = await fetchWithAuth(url);
-  return prs.slice(0, CONFIG.MAX_PRS);
+  const url = `https://api.github.com/repos/${activeRepo.owner}/${activeRepo.repo}/pulls?state=all`;
+  return fetchWithAuth(url);
 }
 
 async function fetchIssues() {
@@ -339,22 +338,22 @@ function createPullRequestsChart(container, pullRequests) {
 
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-
   const timeData = {};
+
   for (
     let d = new Date(thirtyDaysAgo);
     d <= new Date();
     d.setDate(d.getDate() + 1)
   ) {
     const dateStr = d.toISOString().split("T")[0];
-    timeData[dateStr] = { open: 0, merged: 0 };
+    timeData[dateStr] = { open: 0, closed: 0 };
   }
 
   pullRequests.forEach((pr) => {
     const date = new Date(pr.created_at).toISOString().split("T")[0];
     if (timeData[date]) {
-      if (pr.merged_at) {
-        timeData[date].merged++;
+      if (pr.state === "closed") {
+        timeData[date].closed++;
       } else {
         timeData[date].open++;
       }
@@ -362,10 +361,20 @@ function createPullRequestsChart(container, pullRequests) {
   });
 
   const option = {
-    tooltip: { trigger: "axis" },
-    legend: { data: ["Open", "Merged"] },
-    xAxis: { type: "category", data: Object.keys(timeData) },
-    yAxis: { type: "value" },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: { type: "shadow" },
+    },
+    legend: {
+      data: ["Open", "Closed"],
+    },
+    xAxis: {
+      type: "category",
+      data: Object.keys(timeData),
+    },
+    yAxis: {
+      type: "value",
+    },
     series: [
       {
         name: "Open",
@@ -374,9 +383,9 @@ function createPullRequestsChart(container, pullRequests) {
         itemStyle: { color: "#28a745" },
       },
       {
-        name: "Merged",
+        name: "Closed",
         type: "line",
-        data: Object.values(timeData).map((d) => d.merged),
+        data: Object.values(timeData).map((d) => d.closed),
         itemStyle: { color: "#6f42c1" },
       },
     ],
