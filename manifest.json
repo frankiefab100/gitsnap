@@ -3,7 +3,7 @@
   "short_name": "GitSnap",
   "name": "GitSnap",
   "version": "2.0.1",
-  "version_name": "",
+  "version_name": "2.0",
   "description": "Visualize key metrics of any GitHub repository",
   "permissions": ["activeTab", "tabs", "storage"],
   "host_permissions": ["https://api.github.com/*", "https://github.com/*"],
