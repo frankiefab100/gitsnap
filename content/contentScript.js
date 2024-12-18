@@ -183,13 +183,13 @@ function renderTooltipContent(data) {
   const gridCols = enabledCharts.length > 2 ? 2 : enabledCharts.length;
 
   tooltip.innerHTML = `
-    <div style="display: grid; grid-template-columns: repeat(${gridCols}, 1fr); gap: 16px; min-width: 600px;">
+    <div style="display: grid; grid-template-columns: repeat(${gridCols}, 1fr); gap: 16px; min-width: 400px;">
       ${
         chartToggles.contributors && data.contributors
           ? `
         <div class="tooltip-section">
           <h3 style="margin-bottom: 8px; font-size: 16px;">Contributors</h3>
-          <div class="contributors-chart" style="width: 300px; height: 200px;"></div>
+          <div class="contributors-chart" style="width: 400px; height: 200px; margin: 0 auto;"></div>
         </div>
       `
           : ""
@@ -199,7 +199,7 @@ function renderTooltipContent(data) {
           ? `
         <div class="tooltip-section">
           <h3 style="margin-bottom: 8px; font-size: 16px;">Branches</h3>
-          <div class="branches-chart" style="width: 300px; height: 200px;"></div>
+          <div class="branches-chart" style="width: 300px; height: 200px; margin: 0 auto;"></div>
         </div>
       `
           : ""
@@ -209,7 +209,7 @@ function renderTooltipContent(data) {
           ? `
         <div class="tooltip-section">
           <h3 style="margin-bottom: 8px; font-size: 16px;">Pull Requests</h3>
-          <div class="prs-chart" style="width: 300px; height: 200px;"></div>
+          <div class="prs-chart" style="width: 300px; height: 200px; margin: 0 auto;"></div>
         </div>
       `
           : ""
@@ -219,7 +219,7 @@ function renderTooltipContent(data) {
           ? `
         <div class="tooltip-section">
           <h3 style="margin-bottom: 8px; font-size: 16px;">Issues</h3>
-          <div class="issues-chart" style="width: 300px; height: 200px;"></div>
+          <div class="issues-chart" style="width: 300px; height: 200px; margin: 0 auto;"></div>
         </div>
       `
           : ""
@@ -313,9 +313,9 @@ function createBranchesChart(container, branches) {
         type: "tree",
         data: [data],
         top: "5%",
-        left: "15%",
+        left: "2%",
         bottom: "5%",
-        right: "15%",
+        right: "68%",
         symbolSize: 7,
         orient: "LR",
         initialTreeDepth: 2,
