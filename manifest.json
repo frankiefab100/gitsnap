@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "version_name": "0.1 beta",
   "description": "Visualize key metrics of any GitHub repository",
-  "permissions": ["activeTab", "tabs"],
+  "permissions": ["activeTab", "tabs", "storage"],
   "host_permissions": ["https://api.github.com/*", "https://github.com/*"],
   "action": {
     "default_popup": "popup/popup.html",

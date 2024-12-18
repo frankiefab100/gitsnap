@@ -1,17 +1,39 @@
 let tooltip = null;
 let activeRepo = null;
 let hoverTimeout = null;
-let enabled = false;
+let enabled = true;
+let chartToggles = {
+  contributors: true,
+  branches: true,
+  pullRequests: true,
+  issues: true,
+};
 
 function init() {
   createTooltip();
+  loadChartToggles();
   listenForExtensionStatus();
+  addHoverListeners();
 }
 
 function createTooltip() {
   tooltip = document.createElement("div");
   tooltip.className = "repo-tooltip";
   document.body.appendChild(tooltip);
+}
+
+function loadChartToggles() {
+  chrome.storage.sync.get(["chartToggles"], (result) => {
+    if (result.chartToggles) {
+      chartToggles = result.chartToggles;
+    }
+  });
+}
+
+function saveChartToggles() {
+  chrome.storage.sync.set({ chartToggles }, () => {
+    return chartToggles;
+  });
 }
 
 function listenForExtensionStatus() {
@@ -23,6 +45,13 @@ function listenForExtensionStatus() {
           addHoverListeners();
         } else {
           removeHoverListeners();
+          hideTooltip();
+        }
+        sendResponse({ success: true });
+      } else if (message.action === "updateChartToggle") {
+        chartToggles[message.chart] = message.enabled;
+        if (activeRepo) {
+          fetchRepoData();
         }
         sendResponse({ success: true });
       }
@@ -34,10 +63,8 @@ function listenForExtensionStatus() {
 }
 
 function addHoverListeners() {
-  const boundMouseOver = handleMouseOver.bind(null);
-  const boundMouseOut = handleMouseOut.bind(null);
-  document.addEventListener("mouseover", boundMouseOver);
-  document.addEventListener("mouseout", boundMouseOut);
+  document.addEventListener("mouseover", handleMouseOver);
+  document.addEventListener("mouseout", handleMouseOut);
 }
 
 function removeHoverListeners() {
@@ -89,12 +116,18 @@ function hideTooltip() {
 async function fetchRepoData() {
   try {
     const [contributors, branches, pullRequests, issues] = await Promise.all([
-      fetchContributors(),
-      fetchBranches(),
-      fetchPullRequests(),
-      fetchIssues(),
+      chartToggles.contributors ? fetchContributors() : Promise.resolve(null),
+      chartToggles.branches ? fetchBranches() : Promise.resolve(null),
+      chartToggles.pullRequests ? fetchPullRequests() : Promise.resolve(null),
+      chartToggles.issues ? fetchIssues() : Promise.resolve(null),
     ]);
-    renderTooltipContent(contributors, branches, pullRequests, issues);
+
+    renderTooltipContent({
+      contributors,
+      branches,
+      pullRequests,
+      issues,
+    });
   } catch (error) {
     showError(error.message);
   }
@@ -135,42 +168,92 @@ async function fetchIssues() {
   return fetchWithAuth(url);
 }
 
-function renderTooltipContent(contributors, branches, pullRequests, issues) {
-  tooltip.innerHTML = `
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr);">
-            <div class="tooltip-section">
-                <h3>Contributors</h3>
-                <div class="contributors-chart" style="width: 300px; height: 200px;"></div>
-            </div>
-            <div class="tooltip-section">
-                <h3>Branches</h3>
-                <div class="branches-chart" style="width: 300px; height: 200px;"></div>
-            </div>
-        </div>
-        <div style="display: grid; grid-template-columns: repeat(2, 1fr);">
-            <div class="tooltip-section">
-                <h3>Pull Requests</h3>
-                <div class="prs-chart" style="width: 300px; height: 200px;"></div>
-            </div>
-            <div class="tooltip-section">
-                <h3>Issues</h3>
-                <div class="issues-chart" style="width: 300px; height: 200px;"></div>
-            </div>
-        </div>`;
+function renderTooltipContent(data) {
+  const enabledCharts = Object.keys(chartToggles).filter(
+    (key) => chartToggles[key]
+  );
 
-  setTimeout(() => {
-    createContributorsChart(
-      tooltip.querySelector(".contributors-chart"),
-      contributors
-    );
-    createBranchesChart(tooltip.querySelector(".branches-chart"), branches);
-    createPullRequestsChart(tooltip.querySelector(".prs-chart"), pullRequests);
-    createIssuesChart(tooltip.querySelector(".issues-chart"), issues);
-  }, 0);
+  if (enabledCharts.length === 0) {
+    tooltip.innerHTML =
+      '<div class="no-charts">No charts selected to display</div>';
+    return;
+  }
+
+  // Calculate the grid columns based on enabled charts
+  const gridCols = enabledCharts.length > 2 ? 2 : enabledCharts.length;
+
+  tooltip.innerHTML = `
+    <div style="display: grid; grid-template-columns: repeat(${gridCols}, 1fr); gap: 16px; min-width: 600px;">
+      ${
+        chartToggles.contributors && data.contributors
+          ? `
+        <div class="tooltip-section">
+          <h3 style="margin-bottom: 8px; font-size: 16px;">Contributors</h3>
+          <div class="contributors-chart" style="width: 300px; height: 200px;"></div>
+        </div>
+      `
+          : ""
+      }
+      ${
+        chartToggles.branches && data.branches
+          ? `
+        <div class="tooltip-section">
+          <h3 style="margin-bottom: 8px; font-size: 16px;">Branches</h3>
+          <div class="branches-chart" style="width: 300px; height: 200px;"></div>
+        </div>
+      `
+          : ""
+      }
+      ${
+        chartToggles.pullRequests && data.pullRequests
+          ? `
+        <div class="tooltip-section">
+          <h3 style="margin-bottom: 8px; font-size: 16px;">Pull Requests</h3>
+          <div class="prs-chart" style="width: 300px; height: 200px;"></div>
+        </div>
+      `
+          : ""
+      }
+      ${
+        chartToggles.issues && data.issues
+          ? `
+        <div class="tooltip-section">
+          <h3 style="margin-bottom: 8px; font-size: 16px;">Issues</h3>
+          <div class="issues-chart" style="width: 300px; height: 200px;"></div>
+        </div>
+      `
+          : ""
+      }
+    </div>`;
+
+  // Initialize charts after a short delay to ensure containers are ready
+  requestAnimationFrame(() => {
+    if (chartToggles.contributors && data.contributors) {
+      createContributorsChart(
+        tooltip.querySelector(".contributors-chart"),
+        data.contributors
+      );
+    }
+    if (chartToggles.branches && data.branches) {
+      createBranchesChart(
+        tooltip.querySelector(".branches-chart"),
+        data.branches
+      );
+    }
+    if (chartToggles.pullRequests && data.pullRequests) {
+      createPullRequestsChart(
+        tooltip.querySelector(".prs-chart"),
+        data.pullRequests
+      );
+    }
+    if (chartToggles.issues && data.issues) {
+      createIssuesChart(tooltip.querySelector(".issues-chart"), data.issues);
+    }
+  });
 }
 
 function showError(message) {
-  tooltip.innerHTML = `<div class="error"> Error: ${message} </div>`;
+  tooltip.innerHTML = `<div class="error">Error: ${message}</div>`;
 }
 
 function createContributorsChart(container, contributors) {
