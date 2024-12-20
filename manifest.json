@@ -6,7 +6,6 @@
   "version_name": "2.1",
   "description": "Visualize key metrics of any GitHub repository",
   "permissions": [
-    "activeTab",
     "tabs",
     "storage"
   ],
