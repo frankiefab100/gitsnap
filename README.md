@@ -31,7 +31,8 @@ It utilize the [Echarts library](https://echarts.apache.org/) to create various 
 
 ## Demo
 
-![GitSnap-gif](https://github.com/user-attachments/assets/26eab250-353e-4ca0-bc88-3a39a27ac47c)
+![GitSnap-Demo](https://github.com/user-attachments/assets/8a817201-d2d9-4f53-8619-f2c86e46f025)
+
 
 ## How It Works
 
